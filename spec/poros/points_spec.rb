@@ -37,5 +37,8 @@ require 'rails_helper'
 
    it "exists and has attributes" do
      expect(@points).to be_an_instance_of(Points)
+     expect(@points.payer).to eq("DANNON")
+     expect(@points.points).to eq(300)
+     expect(@points.timestamp).to eq("2022-10-31T10:00:00Z")
    end
  end
