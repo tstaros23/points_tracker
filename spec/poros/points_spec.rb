@@ -20,12 +20,12 @@ require 'rails_helper'
      attr4 = {
        payer: "MILLER COORS",
        points: 10000,
-       timestamp: "2022-11-01T14:00:00Z"
+       timestamp: "2022-11-02T14:00:00Z"
      }
      attr5 = {
        payer: "DANNON",
        points: 1000,
-       timestamp: "2022-11-02T14:00:00Z"
+       timestamp: "2022-11-01T14:00:00Z"
      }
 
      @points = Points.new(attr)
@@ -40,5 +40,18 @@ require 'rails_helper'
      expect(@points.payer).to eq("DANNON")
      expect(@points.points).to eq(300)
      expect(@points.timestamp).to eq("2022-10-31T10:00:00Z")
+   end
+
+   it "can order points by transaction date" do
+     unordered = [@points, @points2, @points3, @points4, @points5]
+     expect(Points.order(unordered)).to eq([@points, @points2, @points3, @points5, @points4])
+     expect(Points.order(unordered)).to_not eq(unordered)
+   end
+
+   it "spends points" do
+     expect(@points.spend(300)).to eq(-300)
+     expect(@points.spend(400)).to eq(-300)
+     expect(@points.spend(0)).to eq(300)
+     expect(@points3.spend(300)).to eq(500)
    end
  end
