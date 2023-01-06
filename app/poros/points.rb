@@ -24,4 +24,7 @@ class Points
       @points
     end
   end
+  #get all the unique names of the payers
+  #set those as keys
+  # when the keys match the transaction then add to the hash total
 end
