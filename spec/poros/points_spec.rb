@@ -54,4 +54,11 @@ require 'rails_helper'
      expect(@points.spend(0)).to eq(300)
      expect(@points3.spend(300)).to eq(500)
    end
+
+   it "total spent" do
+     unordered = [@points, @points2, @points3, @points4, @points5]
+     result = [ {"DANNON" => -800}, {"UNILEVER" => -200}]
+     transactions = Points.order(unordered)
+     expect(@points.total_spent(1000, unordered)).to eq(result)
+   end
  end
