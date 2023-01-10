@@ -17,14 +17,22 @@ class Points
 
   def spend(points)
     if points > 0 && @points.negative?
-      -@points + points
+      -(@points) + points
     elsif points > 0
-      -@points
+      -(@points)
     else
       @points
     end
   end
-  #get all the unique names of the payers
-  #set those as keys
-  # when the keys match the transaction then add to the hash total
+
+  def total_spent(points, transactions)
+    hash = Hash.new(0)
+    transactions = Points.order(transactions)
+    transactions.map do |transaction|
+      hash[transaction.payer] += transaction.spend(transaction.points)
+      points -= transaction.points
+      break if points <= 0
+    end
+    hash
+  end
 end
