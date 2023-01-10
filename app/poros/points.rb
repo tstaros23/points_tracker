@@ -16,12 +16,10 @@ class Points
   end
 
   def spend(points)
-    if points > 0 && @points.negative?
-      -(@points) + points
-    elsif points > 0
+    if @points.negative?
       -(@points)
     else
-      @points
+      -(points)
     end
   end
 
@@ -29,9 +27,13 @@ class Points
     hash = Hash.new(0)
     transactions = Points.order(transactions)
     transactions.map do |transaction|
-      hash[transaction.payer] += transaction.spend(transaction.points)
-      points -= transaction.points
-      break if points <= 0
+      if transaction.points > points
+        hash[transaction.payer] -= points
+        break
+      else
+        hash[transaction.payer] += transaction.spend(transaction.points)
+        points -= transaction.points
+      end
     end
     hash
   end
